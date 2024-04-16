@@ -1,0 +1,13 @@
+{
+  "FolderOrderSettings": [
+    {"name":"Sprites","order":6,"path":"folders/Sprites.yy",},
+    {"name":"Sounds","order":1,"path":"folders/Sounds.yy",},
+    {"name":"Scripts","order":2,"path":"folders/Scripts.yy",},
+    {"name":"Shaders","order":3,"path":"folders/Shaders.yy",},
+    {"name":"Timelines","order":4,"path":"folders/Timelines.yy",},
+    {"name":"Rooms","order":5,"path":"folders/Rooms.yy",},
+  ],
+  "ResourceOrderSettings": [
+    {"name":"cont_game","order":7,"path":"objects/cont_game/cont_game.yy",},
+  ],
+}
