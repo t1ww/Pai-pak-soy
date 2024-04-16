@@ -3,19 +3,10 @@
 /// universal script
 // const
 #macro null pointer_null
+#macro START_ROOM rm_default
 
-/// special macros (config)
-#macro Default:START_ROOM rm_start
-#macro ADMIN false
-#macro Default:TESTING false
-#macro Default:DEVELOPMENT true
-// dev mode
-#macro Development:START_ROOM rm_testing_hub
-#macro Development:TESTING true
-// release
-#macro Release:START_ROOM rm_main_menu
-#macro Release:DEVELOPMENT flase
-// release (skip)
+/// special macros
+#macro func function()
    
 #region/// useful misc scripts
 function draw_set_default(){

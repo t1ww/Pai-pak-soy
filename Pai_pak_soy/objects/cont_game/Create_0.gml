@@ -36,26 +36,19 @@ controller_list = [cont_camera,cont_input,obj_player];
 create_controller = function(_obj){
 	return instance_create_layer(0,0,"controller",_obj);
 }
-create_entity = function(_obj, _x, _y){
-	return instance_create_layer(_x,_y,"entity",_obj);
+create_entity = function(_obj, _x, _y, _config = {}){
+	return instance_create_layer(_x,_y,"entity",_obj, _config);
 }
 
 // game control scripts
 game_start = function(){
-	create_player_character();
 	room_goto(START_ROOM);
 }
-create_player_character = function(_x = 0,_y = 0){
-	var inst, p = obj_player;
-	if(p.character == null){
-		inst = cont_game.create_entity(obj_player_character, _x,_y);	
-		p.character = inst;
-	}
-	return inst;
-}
+	
+/// GAME START UP SCRIPTS ///
 
-
-/// GAME START UP SCRIPTS
+// set config
+draw_set_default();
 
 // create all the controllers
 for(var i = 0; i < array_length(controller_list); i++){

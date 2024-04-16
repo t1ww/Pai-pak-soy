@@ -30,7 +30,9 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"icons","folderPath":"folders/Sprites/icons.yy",},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"placeholding textures","folderPath":"folders/Sprites/placeholding textures.yy",},
   ],
-  "IncludedFiles": [],
+  "IncludedFiles": [
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"m5x7.ttf","CopyToMask":-1,"filePath":"datafiles",},
+  ],
   "isEcma": false,
   "LibraryEmitters": [],
   "MetaData": {
