@@ -1,4 +1,4 @@
-/// @description > object event
+/// @description > set collision layer's visibility
 // > code here
 
 // set collision layer's visibility

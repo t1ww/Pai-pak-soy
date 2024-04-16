@@ -1,2 +1,2 @@
-/// @description > game controller draw event
+/// @description > dont draw self
 /// dont draw self

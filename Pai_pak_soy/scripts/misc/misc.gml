@@ -4,6 +4,8 @@
 // const
 #macro null pointer_null
 #macro START_ROOM rm_default
+#macro RIGHT 1
+#macro LEFT -1
 
 /// special macros
 #macro func function()
