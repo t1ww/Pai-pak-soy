@@ -1,0 +1,13 @@
+so we have grid for towns and other static areas
+
+// example with small one represents tiers with "t"
+[beach, town t3, town t2 or 3, town t1 or 2, town t1, first_town, town t1, town t1 or 2, town t2 or 3, town t3, beach] landed area
+
+now going from town to town player have to pass "unsafe area" which its the combat zone with enemies and resources to collect
+will also have it's tier and encounter will based on destination town
+
+such as going from 1 to 2 player will start into t1 unsafe area and may find doors for t1 or t2 unsafe area
+
+each of unsafe area will have chance of 3 - 4 doors ( 75/45 chance )
+ - for 3 doors [ 70% ? same : higher tier , 70% ? same : higher tier , high : door]
+ - for 4 doors [ 70% ? same : higher tier , 70% ? same : higher tier , high : door]
