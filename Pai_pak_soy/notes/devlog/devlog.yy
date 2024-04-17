@@ -1,9 +1,11 @@
 {
-  "resourceType": "GMNotes",
-  "resourceVersion": "1.1",
-  "name": "devlog",
-  "parent": {
-    "name": "Pai_pak_soy",
-    "path": "Pai_pak_soy.yyp",
+  "$GMNotes":"",
+  "%Name":"devlog",
+  "name":"devlog",
+  "parent":{
+    "name":"Pai_pak_soy",
+    "path":"Pai_pak_soy.yyp",
   },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
 }
