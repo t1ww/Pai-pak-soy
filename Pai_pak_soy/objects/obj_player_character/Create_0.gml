@@ -57,31 +57,65 @@ depth-=1;
 #endregion ///
 
 /// player functions
-	movement_collision = function(_hsp,_vsp, _collsion_object = obj_collision) {
-	// moving vertically ( gravity )
-		_vsp = _vsp + grv;
- 
-	// other checks
-		// ground check
-		on_ground = place_meeting(x,y+1,obj_collision);
-		if(on_ground)jump_count = 0; // reset jumps
+	movement = func {
+		// INPUT CHECK
+		var _hInput = parent.get_h_input();
+		var _vInput = parent.get_v_input();
+		// HORISONTAL CONTROLS
+			if(keyboard_check(vk_lshift)){
+				// running
+				h_speed = (_hInput) * __.base_speed;	
+			}else{
+				// walking
+				h_speed = (_hInput) * (__.base_speed * .5);
+			}
+			
+			// RETURNS h_speed
+			
+		// VERTICAL CONTROLS
+			if(on_ground && _vInput.check){
+				// jumping on ground
+			    jump_array[jump_count]();
+			    jump_count++;
+			} else /*jumping mid air*/
+			if (_vInput.pressed && jump_count < array_length(jump_array)) {
+				// jump
+			    jump_array[jump_count]();
+				h_speed *= 1.2;
+			    jump_count++;
+			}
+		// gravity
+			// ground check
+			on_ground = place_meeting(x,y+1,obj_collision) and v_speed >=0 ;
+			if(on_ground)jump_count = 0; // reset jumps
 	
+			v_speed = v_speed + grv;
+		
+			// RETURNS v_speed
+			
+		// move and collide
+			var _colliders = movement_collision(h_speed,v_speed,obj_collision);
+			
+		// resetting jump count
+			if (array_length(_colliders.v_colliders) > 0){
+			    if (v_speed > 0) jump_count = 0;
+			    v_speed = 0;
+		
+			}	
+	}
+	movement_collision = function(_hsp,_vsp, _collsion_object) {
+		// apply speed with collision
 		// Horizontal move & collide
-		var _hColliders = move_and_collide(h_speed, 0, obj_collision, abs(h_speed));
+		var _hColliders = move_and_collide(_hsp, 0, _collsion_object, abs(_hsp));
 	
 		// Vertical move & collide
-		var _vColliders = move_and_collide(0, v_speed, obj_collision, abs(v_speed) , h_speed, v_speed, h_speed, v_speed);
-		// resetting jump count
-		if (array_length(_vColliders) > 0){
-		    if (v_speed > 0) jump_count = 0;
-		    v_speed = 0;
+		var _vColliders = move_and_collide(0, _vsp, _collsion_object, abs(_vsp) , _hsp, _vsp, _hsp, _vsp);
 		
-		}
-	
-		// moving down slope
-		if (on_ground) && (place_meeting(x,y + abs(h_speed) + 1 ,obj_collision)) && (v_speed >= 0) {   
-		    v_speed += abs(h_speed) + 1;
-		}
+		//// moving down slope
+		//if (on_ground) && (place_meeting(x,y + abs(_hsp) + 1 ,_collsion_object)) && (_vsp >= 0) {   
+		//    _vsp += abs(_hsp) + 1;
+		//}
+		return { h_colliders : _hColliders, v_colliders : _vColliders };
 	}
 	set_sprite = function(_spr) {
 		if(sprite_index != _spr) {
@@ -95,32 +129,11 @@ depth-=1;
 /// state machine
 	state_idle = func {
 		// idle state
-		movement_collision(0,0);
+		movement();
 	}
 	state_free = func {
 		// run	
-		var _hInput = parent.get_h_input();
-		var _vInput = parent.get_v_input();
-		// controls horizontally
-			if(keyboard_check(vk_lshift)){
-				// running
-				h_speed = (_hInput) * __.base_speed;	
-			}else{
-				// walking
-				h_speed = (_hInput) * (__.base_speed * .5);
-			}
-		// controls vertically
-			if(on_ground && _vInput.check){
-				// jumping on ground
-			    jump_array[jump_count]();
-			    jump_count++;
-			} else /*jumping mid air*/
-			if (_vInput.pressed && jump_count < array_length(jump_array)) {
-				// jump
-			    jump_array[jump_count]();
-				h_speed *= 1.2;
-			    jump_count++;
-			}
+		movement();
 	}
 	state_midAir = func {
 		
