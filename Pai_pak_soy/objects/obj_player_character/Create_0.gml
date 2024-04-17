@@ -1,8 +1,8 @@
 /// @description > playable character create event
 // set player forward
 depth-=1;
-#region /// variable initialization
-/// public
+/// variable initialization
+#region /// public
 	// movement stats
 	h_accel  = 4; // frames
 	grv		 = .7;
@@ -20,8 +20,9 @@ depth-=1;
 	}
 	jump_count = 0;
 	jump_array = [normal_jump,normal_jump];
+#endregion 
 
-/// private
+#region /// private
 	__ = {};
 	with __ {
 		/// player stats
@@ -30,36 +31,35 @@ depth-=1;
 		/// dashing
 		can_dash = true;
 		dash_speed = 12;
-	}
+	}	
+#endregion 
+
+#region /// debugging //
+	// debug overlay setup
+	global.playerCharacter_value_section = dbg_section("playerCharacter Value Section");
+	ref_on_ground = ref_create(self,"on_ground");
+	ref_jump_count = ref_create(self,"jump_count");
+	ref_can_dash = ref_create(self.__, "can_dash");
 	
-#endregion // var init
+	dbg_text("on_ground : ");
+	dbg_same_line();
+	dbg_text(ref_on_ground);
+	
+	dbg_text("jump_count : ");
+	dbg_same_line();
+	dbg_text(ref_jump_count);
+	
+	dbg_text("can_dash : ");
+	dbg_same_line();
+	dbg_text(ref_can_dash);
+
+	//show_debug_overlay(false);
+#endregion ///
 
 /// player functions
 	movement_collision = function(_hsp,_vsp, _collsion_object = obj_collision) {
-	var _hInput = parent.get_h_input();
-	var _vInput = parent.get_v_input();
-	// controls horizontally
-		if(keyboard_check(vk_lshift)){
-			// running
-			h_speed = (_hInput) * __.base_speed;	
-		}else{
-			// walking
-			h_speed = (_hInput) * (__.base_speed * .5);
-		}
-	// controls vertically
-		if(on_ground && _vInput.check){
-			// jumping on ground
-		    jump_array[jump_count]();
-		    jump_count++;
-		} else /*jumping mid air*/
-		if (_vInput.pressed && jump_count < array_length(jump_array)) {
-			// jump
-		    jump_array[jump_count]();
-			h_speed *= 1.2;
-		    jump_count++;
-		}
 	// moving vertically ( gravity )
-		v_speed = v_speed + grv;
+		_vsp = _vsp + grv;
  
 	// other checks
 		// ground check
@@ -88,14 +88,39 @@ depth-=1;
 			sprite_index = _spr;	
 		}
 	}
+	jump = function(_hsp,_vsp,_extra_function = func{}) {
+			
+	}
 
 /// state machine
 	state_idle = func {
 		// idle state
 		movement_collision(0,0);
 	}
-	state_running = func {
+	state_free = func {
 		// run	
+		var _hInput = parent.get_h_input();
+		var _vInput = parent.get_v_input();
+		// controls horizontally
+			if(keyboard_check(vk_lshift)){
+				// running
+				h_speed = (_hInput) * __.base_speed;	
+			}else{
+				// walking
+				h_speed = (_hInput) * (__.base_speed * .5);
+			}
+		// controls vertically
+			if(on_ground && _vInput.check){
+				// jumping on ground
+			    jump_array[jump_count]();
+			    jump_count++;
+			} else /*jumping mid air*/
+			if (_vInput.pressed && jump_count < array_length(jump_array)) {
+				// jump
+			    jump_array[jump_count]();
+				h_speed *= 1.2;
+			    jump_count++;
+			}
 	}
 	state_midAir = func {
 		

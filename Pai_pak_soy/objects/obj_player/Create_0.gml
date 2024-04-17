@@ -42,3 +42,4 @@
 	
 // CREATE CALLBACK
 	character_create(50,50,{parent:id});
+	
