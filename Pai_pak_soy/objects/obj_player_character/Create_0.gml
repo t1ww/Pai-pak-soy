@@ -3,9 +3,6 @@
 depth-=1;
 #region /// variable initialization
 /// public
-	state = null;
-	parent = parent;
-
 	// movement stats
 	h_accel  = 4; // frames
 	grv		 = .7;
