@@ -2,6 +2,28 @@
 // set player forward
 depth-=1;
 #region /// variable initialization
+/// public
+	state = null;
+	parent = parent;
+
+	// movement stats
+	h_accel  = 4; // frames
+	grv		 = .7;
+	jump_spd = 12;
+	
+	// dynamic stats
+	on_ground = null;
+	h_speed = 0;
+	v_speed = 0;
+	facing_direction = RIGHT; // RIGHT = 1, LEFT = -1;
+
+	// jumps
+	normal_jump = function(){
+		v_speed = -jump_spd;
+	}
+	jump_count = 0;
+	jump_array = [normal_jump,normal_jump];
+
 /// private
 	__ = {};
 	with __ {
@@ -12,23 +34,6 @@ depth-=1;
 		can_dash = true;
 		dash_speed = 12;
 	}
-// movement stats
-	h_accel  = 4; // frames
-	grv		 = .7;
-	jump_spd = 12;
-	
-/// dynamic stats
-	on_ground = null;
-	h_speed = 0;
-	v_speed = 0;
-	facing_direction = RIGHT; // RIGHT = 1, LEFT = -1;
-
-/// jumps
-	normal_jump = function(){
-		v_speed = -jump_spd;
-	}
-	jump_count = 0;
-	jump_array = [normal_jump,normal_jump];
 	
 #endregion // var init
 
