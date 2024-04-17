@@ -4,7 +4,7 @@ depth-=1;
 /// variable initialization
 #region /// public
 	// movement stats
-	h_accel  = 1/4; // frames
+	h_accel  = .25; // frames
 	grv		 = .7;
 	jump_spd = 12;
 	
@@ -37,21 +37,12 @@ depth-=1;
 #region /// debugging //
 	// debug overlay setup
 	global.playerCharacter_value_section = dbg_section("playerCharacter Value Section");
-	ref_on_ground = ref_create(self,"on_ground");
-	ref_jump_count = ref_create(self,"jump_count");
-	ref_can_dash = ref_create(self.__, "can_dash");
-	
-	dbg_text("on_ground : ");
-	dbg_same_line();
-	dbg_text(ref_on_ground);
-	
-	dbg_text("jump_count : ");
-	dbg_same_line();
-	dbg_text(ref_jump_count);
-	
-	dbg_text("can_dash : ");
-	dbg_same_line();
-	dbg_text(ref_can_dash);
+
+    debug_add_variable(self,"h_speed");
+    debug_add_variable(self,"v_speed");
+    debug_add_variable(self,"on_ground");
+    debug_add_variable(self,"jump_count");
+    debug_add_variable(self.__,"can_dash");
 
 	//show_debug_overlay(false);
 #endregion ///
@@ -62,13 +53,33 @@ depth-=1;
 		var _hInput = parent.get_h_input();
 		var _vInput = parent.get_v_input();
 		// HORISONTAL CONTROLS
-			if(keyboard_check(vk_lshift)){
-				// running
-				h_speed += lerp(h_speed,(_hInput) * __.base_speed, h_accel);	
-			}else{
-				// walking
-				h_speed += lerp(h_speed,(_hInput) * (__.base_speed * .5), h_accel);
-			}
+            if(_hInput != 0){
+                if(on_ground){
+                    // on ground control
+                    // increasing speed
+                    if(keyboard_check(vk_lshift)){
+                        // running
+                        h_speed = lerp(h_speed, (_hInput) * __.base_speed, h_accel);
+                    }else{
+                        // walking
+                        h_speed = lerp(h_speed, (_hInput) * (__.base_speed * .5), h_accel);
+                    }
+                } else {
+                    // mid air control only for decreasing
+                    if (sign(_hInput) == sign(h_speed) or h_speed == 0){
+                        h_speed += sign(h_speed) * .05;
+                    } else {
+                        h_speed -= sign(h_speed) * .5;
+                    }
+                }
+            } else { // _hInput == 0
+                if(on_ground){
+                    h_speed = lerp(h_speed, 0, .1);
+                } else {
+                    h_speed = lerp(h_speed, 0, .01);
+                }
+            }
+			
 			
 			// RETURNS h_speed
 			
@@ -107,6 +118,12 @@ depth-=1;
 		// apply speed with collision
 		// Horizontal move & collide
 		var _hColliders = move_and_collide(_hsp, 0, _collsion_object, abs(_hsp));
+     
+        // set h_speed to 0 when hitting wall
+        if(array_length(_hColliders) != 0){
+            h_speed = 0;
+        }
+             
 	
 		// Vertical move & collide
 		var _vColliders = move_and_collide(0, _vsp, _collsion_object, abs(_vsp) , _hsp, _vsp, _hsp, _vsp);
@@ -122,28 +139,13 @@ depth-=1;
 			sprite_index = _spr;	
 		}
 	}
-	jump = function(_hsp,_vsp,_extra_function = func{}) {
+	jump = function(_hsp,_vsp,_extra_function = func {}) {
 			
 	}
 
 /// state machine
-	state_idle = func {
-		// idle state
-		movement();
-	}
 	state_free = func {
-		// run	
 		movement();
-	}
-	state_midAir = func {
-		// move and collide
-			var _colliders = movement_collision(h_speed,v_speed,obj_collision);
-
-		// resetting jump count
-			if (array_length(_colliders.v_colliders) > 0){
-			    if (v_speed > 0) jump_count = 0;
-			    v_speed = 0;
-			}	
 	}
 	state_roll = func {
 		// roll / slide
@@ -169,4 +171,4 @@ depth-=1;
 		cont_camera.target = self;	
 	}
 // set state
-	set_state(state_idle);
+	set_state(state_free);
