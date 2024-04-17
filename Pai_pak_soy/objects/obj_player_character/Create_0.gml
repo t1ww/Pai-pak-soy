@@ -4,7 +4,7 @@ depth-=1;
 /// variable initialization
 #region /// public
 	// movement stats
-	h_accel  = 4; // frames
+	h_accel  = 1/4; // frames
 	grv		 = .7;
 	jump_spd = 12;
 	
@@ -64,10 +64,10 @@ depth-=1;
 		// HORISONTAL CONTROLS
 			if(keyboard_check(vk_lshift)){
 				// running
-				h_speed = (_hInput) * __.base_speed;	
+				h_speed += lerp(h_speed,(_hInput) * __.base_speed, h_accel);	
 			}else{
 				// walking
-				h_speed = (_hInput) * (__.base_speed * .5);
+				h_speed += lerp(h_speed,(_hInput) * (__.base_speed * .5), h_accel);
 			}
 			
 			// RETURNS h_speed
@@ -136,7 +136,14 @@ depth-=1;
 		movement();
 	}
 	state_midAir = func {
-		
+		// move and collide
+			var _colliders = movement_collision(h_speed,v_speed,obj_collision);
+
+		// resetting jump count
+			if (array_length(_colliders.v_colliders) > 0){
+			    if (v_speed > 0) jump_count = 0;
+			    v_speed = 0;
+			}	
 	}
 	state_roll = func {
 		// roll / slide
