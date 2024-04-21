@@ -11,6 +11,12 @@
 #macro func function()
    
 #region/// useful misc scripts
+function debug_add_variable(_inst,_variable_name){
+    var _ref = ref_create(_inst,_variable_name);
+    dbg_text($"{_variable_name} : ");
+    dbg_same_line();
+    dbg_text(_ref);
+}
 function draw_set_default(){
 	draw_set_font(fnt_def);
 	draw_set_halign(fa_center);

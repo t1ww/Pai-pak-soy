@@ -6,8 +6,8 @@
 */
 // code here >
 function create_text_bubble(_x,_y,_text,_follow,_timer = 120){
-	var inst = create_ui_instance(obj_text_bubble,_x,_y);
-	with(inst){
+	var _inst = create_ui_instance(obj_text_bubble,_x,_y);
+	with(_inst){
 		text = _text; // string of text
 		follow_inst = _follow ?? noone;
 		timer = _timer;// time before the textbox start fading
@@ -17,5 +17,5 @@ function create_text_bubble(_x,_y,_text,_follow,_timer = 120){
 			y_buffer = y - follow_inst.y;
 		}
 	}
-	return inst;
+	return _inst;
 }
